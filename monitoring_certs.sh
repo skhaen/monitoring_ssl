@@ -9,20 +9,16 @@ CRITICAL=""
 PATHCERT="/etc/ssl/private"
 PATHCERT_LE="/etc/letsencrypt/live"
 
-
-
-
 ### CERTS IN /etc/ssl/private
 if [ -d "$PATHCERT" ]; then
 
-    for CERT in $(find "$PATHCERT/" -iname "*.crt$");
+    for CERT in $(find "$PATHCERT" -iname "*.crt$");
     do
 	CERT_END_DATE=$(openssl x509 -in "$PATHCERT/$CERT" -noout -enddate | sed -e "s/.*=//")
  
 	DATE_TODAY=$(date +'%s')
 	DATE_CERT=$(date -ud "$CERT_END_DATE" +'%s')
 	
-
 	DATE_JOURS_DIFF=$(( ( $DATE_CERT - $DATE_TODAY ) / (60*60*24) ))
 
 	#CRITICAL - 7 jours
@@ -50,15 +46,15 @@ if [ -d "$PATHCERT_LE" ]; then
 	
 	    DATE_JOURS_DIFF=$(( ( $DATE_CERT - $DATE_TODAY ) / (60*60*24) ))
 
-	#CRITICAL - 7 jours
-    if [[ $DATE_JOURS_DIFF -le 7 ]]; then
-	CRITICAL="$CRITICAL Cert SSL $CERT a renouveler avant $DATE_JOURS_DIFF jour(s)"
-    fi
-
-	# WARNING - entre 15 et 7 jours
-    if [[ $DATE_JOURS_DIFF -gt 7 &&  $DATE_JOURS_DIFF -le 15 ]]; then
-	WARNING="$WARNING Cert SSL $CERT a renouveler avant $DATE_JOURS_DIFF jour(s)"
-    fi
+		#CRITICAL - 7 jours
+		if [[ $DATE_JOURS_DIFF -le 7 ]]; then
+			CRITICAL="$CRITICAL Cert SSL $CERT a renouveler avant $DATE_JOURS_DIFF jour(s)"
+		fi
+		
+		# WARNING - entre 15 et 7 jours
+		if [[ $DATE_JOURS_DIFF -gt 7 &&  $DATE_JOURS_DIFF -le 15 ]]; then
+			WARNING="$WARNING Cert SSL $CERT a renouveler avant $DATE_JOURS_DIFF jour(s)"
+		fi
 
     done
 fi
