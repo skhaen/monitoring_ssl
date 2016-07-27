@@ -1,4 +1,5 @@
 #!/bin/bash
+# Skhaen for Octopuce - https://www.octopuce.fr/
 
 STATE_OK=0
 STATE_WARNING=1
