@@ -5,12 +5,8 @@ STATE_WARNING=1
 STATE_CRITICAL=2
 WARNING=""
 CRITICAL=""
-
 PATHCERT="/etc/ssl/private"
 PATHCERT_LE="/etc/letsencrypt/live"
-
-
-
 
 ### CERTS IN /etc/ssl/private
 if [ -d "$PATHCERT" ]; then
@@ -53,7 +49,6 @@ if [ -d "$PATHCERT_LE" ]; then
 
     done
 fi
-
 
 if [[ -n $CRITICAL ]];then
     echo "$CRITICAL"
